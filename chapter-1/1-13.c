@@ -29,9 +29,8 @@ int main()
 			}
 			continue;
 		}
-		else if (state == 0){
+		else if (state == 0)
 			state = 1;
-		}
 		len++;
 	}
 	for (int i = 0; i < WORD_MAX; i++){
