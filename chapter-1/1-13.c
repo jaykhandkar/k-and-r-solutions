@@ -21,7 +21,8 @@ int main()
 	while ((c = getchar()) != EOF) {
 		if ((c == ' ' || c == '\t')){
 			if (state) {
-				nlength[len]++;
+				if (len < WORD_MAX)
+					nlength[len]++;
 				if (nlength[len] > max)
 					max = nlength[len];
 				len = 0;
