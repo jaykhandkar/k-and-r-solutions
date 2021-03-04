@@ -51,7 +51,6 @@ int main(int argc, char *argv[])
 			state = 1;
 		len++;
 	}
-	printf("max=%d \n", max);
 	for (int i = 0; i < WORD_MAX; i++){
 		q = (double) nlength[i] / max;
 		if (nlength[i])
