@@ -8,36 +8,25 @@
 
 #define WORD_MAX 50 /*arbitrary limit on word length*/
 
-/*print the histogram horizontally or vertically, depending on whether the
- * program is invoked as <argv[0] -h> or <argv[0] -v>*/
 int main(int argc, char *argv[])
 {
 	int nlength[WORD_MAX] = {0};
-	int len, state, c, max, vertical;
+	int len, state, c, max;
 	double q;
+	int num = 0;
 
-	/*the histogram for the most frequently occuring word length shall be
-	 * this long, all other frequencies will be scaled accordingly*/
+	/* for the horizontal orientation, the histogram for the most frequently 
+	 * occuring word length shall be this long, all other frequencies are
+	 * scaled accordingly.*/
 	char *s = "----------------------------------------------------------";
-
-	if (argc != 2) {
-		printf("usage: 1-13 [-h][-v]\n");
-		exit(0);
-	}
-	if (strcmp(argv[1], "-h") == 0)
-		vertical = 0;
-	else if (strcmp(argv[1], "-v") == 0)
-		vertical = 1;
-	else{
-		printf("usage: 1-13 [-h][-v]\n");
-		exit(0);
-	}
 
 	len = state = max = 0;
 	while ((c = getchar()) != EOF) {
 		if ((c == ' ' || c == '\t')){
 			if (state) {
 				if (len < WORD_MAX){
+					if (!nlength[len])
+						num++;
 					nlength[len]++;
 					if (nlength[len] > max)
 						max = nlength[len];
@@ -51,9 +40,28 @@ int main(int argc, char *argv[])
 			state = 1;
 		len++;
 	}
+
+	printf("horizontal orientation:\n");
 	for (int i = 0; i < WORD_MAX; i++){
 		q = (double) nlength[i] / max;
 		if (nlength[i])
 			printf("%2d : %.*s\n", i, (int)(q*strlen(s)), s);
 	}
+
+	printf("vertical orientation:\n");
+	for (int i = 0; i < max; i++) {
+		for (int j = 0; j < WORD_MAX; j++) {
+			if (nlength[j] >= (max - i) && nlength[j])
+				printf("%4c", '*');
+			else if (nlength[j])
+				printf("%4c", ' ');
+		}
+		printf("\n");
+	}
+
+	for (int i = 0; i < WORD_MAX; i++)
+		if (nlength[i])
+			printf("%4d", i);
+	printf("\n");
+
 }
